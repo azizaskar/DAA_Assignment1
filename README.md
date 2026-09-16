@@ -16,9 +16,8 @@ Implementation and empirical analysis of Divide-and-Conquer algorithms:
 ### Run Tests
 ```bash
 mvn clean test
+
 mvn clean compile
 mvn exec:java -Dexec.mainClass="daa.Main"
 
-### Generate Plots
-```bash
 py plot.py
