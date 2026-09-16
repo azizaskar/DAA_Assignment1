@@ -1,5 +1,3 @@
-
-```markdown
 # Assignment 1 Report: Divide and Conquer & Asymptotic Notations
 
 ## 1. Asymptotic Bounds Summary
