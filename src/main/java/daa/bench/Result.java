@@ -18,6 +18,6 @@ public class Result {
     }
 
     public String toCsvLine() {
-        return String.format("%s,%s,%d,%.4f,%d,%d", algorithm, input, n, timeMs, comparisons, maxDepth);
+        return String.format(java.util.Locale.US, "%s,%s,%d,%.4f,%d,%d", algorithm, input, n, timeMs, comparisons, maxDepth);
     }
 }
