@@ -54,3 +54,29 @@ The measurements match theoretical predictions closely:
 1. **Cutoff Impact**: Insertion sort cutoff ($n \le 15$) suppresses recursion overhead on small arrays and leverages CPU cache locality.
 2. **Memory Efficiency**: Reusable buffer in MergeSort avoids repeated allocations and GC pressure for large $n = 1\,000\,000$.
 3. **Hardware & Runtime Effects**: Deviations at small $n$ ($n \le 1\,000$) stem from JVM JIT compilation warm-up.
+
+
+---
+
+## 5. Bonus Tasks Analysis (+15%)
+
+### Task A: Deterministic Select (Median of Medians) vs Randomized QuickSelect
+* **Worst-Case Bound**:
+    * **Randomized QuickSelect**: Expected average case is $\Theta(n)$, but degenerate random choices can degrade to worst-case $\Theta(n^2)$.
+    * **Deterministic Select (BFPRT)**: Guarantees strict $O(n)$ worst-case running time by splitting the array into groups of 5 and recursively finding the median of medians. The recurrence is $T(n) \le T(\lceil n/5 \rceil) + T(7n/10) + \Theta(n)$. Since $1/5 + 7/10 = 9/10 < 1$, the recurrence resolves to strictly linear $O(n)$ time.
+* **Empirical Comparison (Random vs Sorted)**:
+    * On random datasets, randomized QuickSelect performs substantially fewer comparisons and runs faster due to smaller constant factors (no overhead of grouping by 5 and finding multiple medians).
+    * On adversarial / presorted inputs, Deterministic Select maintains steady, predictable linear behavior with zero risk of stack overflow or quadratic degradation, whereas randomized QuickSelect depends on pseudo-random generator entropy.
+
+### Task B: Closest Pair of Points ($O(n \log n)$)
+* **Divide-and-Conquer Strategy**:
+    1. Points are pre-sorted by $x$-coordinate in $O(n \log n)$.
+    2. The field is split into left and right halves around $x_{\text{mid}}$.
+    3. Minimum distance $\delta = \min(\delta_{\text{left}}, \delta_{\text{right}})$ is calculated recursively.
+    4. A vertical boundary strip of width $2\delta$ is filtered and sorted by $y$-coordinate.
+* **The 7-Points Geometric Proof**:
+    * Any two points within the strip with distance $< \delta$ must reside within a $2\delta \times \delta$ rectangle.
+    * Subdividing this rectangle into grid squares of side length $\delta / 2$ yields at most 8 squares. Each square can contain at most one point (otherwise $\min(\delta_{\text{left}}, \delta_{\text{right}}) < \delta$, a contradiction).
+    * Consequently, sorted by $y$, each point only needs to be tested against at most 7 subsequent points.
+* **Verification**:
+    * Verified for $n \in [10, 2000]$ against brute-force $O(n^2)$ verification, with differences bounded within numerical tolerance $\epsilon < 10^{-9}$.
